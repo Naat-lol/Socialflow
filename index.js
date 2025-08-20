@@ -21,6 +21,7 @@ const reqLength = document.getElementById('req-length');
 const reqNumber = document.getElementById('req-number');
 const reqSpecial = document.getElementById('req-special');
 
+// Função para mostrar login
 function showLogin() { 
   formLogin.classList.remove('hidden'); 
   formCadastro.classList.add('hidden'); 
@@ -28,6 +29,7 @@ function showLogin() {
   resetPasswordValidation();
 }
 
+// Função para mostrar cadastro
 function showCadastro() { 
   formCadastro.classList.remove('hidden'); 
   formLogin.classList.add('hidden'); 
@@ -35,30 +37,31 @@ function showCadastro() {
   resetPasswordValidation();
 }
 
+// Limpar mensagens de erro
 function clearErrors() { 
   loginError.textContent = ''; 
   cadError.textContent = ''; 
   confirmError.textContent = '';
 }
 
+// Resetar validação de senha
 function resetPasswordValidation() {
-  // Resetar validações visuais
   reqLength.classList.remove('valid', 'invalid');
   reqNumber.classList.remove('valid', 'invalid');
   reqSpecial.classList.remove('valid', 'invalid');
   
-  // Limpar campos
   cadSenha.value = '';
   cadConfirmarSenha.value = '';
   cadSenha.classList.remove('invalid');
   cadConfirmarSenha.classList.remove('invalid');
 }
 
+// Validar email
 function validateEmail(email){ 
-  return /\S+@\S+\.\S+/.test(email); 
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); 
 }
 
-// Funções de validação de senha
+// Validar força da senha
 function validatePassword(password) {
   const hasMinLength = password.length >= 8;
   const hasNumber = /\d/.test(password);
@@ -77,8 +80,9 @@ function validatePassword(password) {
   return hasMinLength && hasNumber && hasSpecial;
 }
 
+// Validar confirmação de senha
 function validatePasswordConfirmation(password, confirmation) {
-  return password === confirmation;
+  return password === confirmation && password !== '';
 }
 
 // Efeito visual para campo inválido
@@ -93,14 +97,36 @@ function showFieldError(field, message) {
   return message;
 }
 
+// Verificar se usuário existe
+function userExists(email) {
+  const users = JSON.parse(localStorage.getItem('users') || '[]');
+  return users.some(user => user.email === email);
+}
+
+// Adicionar novo usuário
+function addUser(user) {
+  const users = JSON.parse(localStorage.getItem('users') || '[]');
+  users.push(user);
+  localStorage.setItem('users', JSON.stringify(users));
+  localStorage.setItem('currentUser', JSON.stringify(user));
+}
+
+// Verificar credenciais de login
+function validateLogin(email, password) {
+  const users = JSON.parse(localStorage.getItem('users') || '[]');
+  return users.find(user => user.email === email && user.senha === password);
+}
+
+// Event listeners para alternar entre formulários
 toCadastroBtn.addEventListener('click', showCadastro);
 toLoginBtn.addEventListener('click', showLogin);
 
-// Ouvinte de eventos para validação em tempo real da senha
+// Validação em tempo real da senha
 cadSenha.addEventListener('input', () => {
   validatePassword(cadSenha.value);
 });
 
+// Submissão do formulário de cadastro
 formCadastro.addEventListener('submit', e => {
   e.preventDefault(); 
   clearErrors();
@@ -115,7 +141,7 @@ formCadastro.addEventListener('submit', e => {
   
   // Validar nome
   if (!nome) {
-    errorMessage = 'Por favor, informe seu nome';
+    errorMessage = 'Por favor, informe seu nome completo';
     showFieldError(document.getElementById('cadNome'), errorMessage);
     isValid = false;
   }
@@ -123,6 +149,10 @@ formCadastro.addEventListener('submit', e => {
   // Validar email
   if (!validateEmail(email)) {
     errorMessage = 'Por favor, informe um email válido';
+    showFieldError(document.getElementById('cadEmail'), errorMessage);
+    isValid = false;
+  } else if (userExists(email)) {
+    errorMessage = 'Este email já está cadastrado';
     showFieldError(document.getElementById('cadEmail'), errorMessage);
     isValid = false;
   }
@@ -145,11 +175,11 @@ formCadastro.addEventListener('submit', e => {
   
   if (!isValid) return;
   
-  // Simulando cadastro bem-sucedido
-  localStorage.setItem('user', JSON.stringify({ nome, email, senha }));
+  // Cadastro bem-sucedido
+  addUser({ nome, email, senha });
   
   // Mostrar mensagem de sucesso
-  cadError.style.color = 'green';
+  cadError.style.color = '#4caf50';
   cadError.textContent = 'Cadastro realizado com sucesso!';
   
   // Limpar formulário
@@ -159,13 +189,16 @@ formCadastro.addEventListener('submit', e => {
   cadConfirmarSenha.value = '';
   resetPasswordValidation();
   
-  // Mudar para tela de login após 2 segundos
+  // Mudar para tela de boas-vindas após 2 segundos
   setTimeout(() => {
-    cadError.style.color = '#d32f2f';
-    showLogin();
+    authSection.classList.add('hidden');
+    userSection.classList.remove('hidden');
+    userNameSpan.textContent = nome;
+    cadError.textContent = '';
   }, 2000);
 });
 
+// Submissão do formulário de login
 formLogin.addEventListener('submit', e => {
   e.preventDefault(); 
   clearErrors();
@@ -179,23 +212,17 @@ formLogin.addEventListener('submit', e => {
     return;
   }
   
-  // Verificar se usuário existe
-  const userData = localStorage.getItem('user');
+  // Verificar credenciais
+  const user = validateLogin(email, senha);
   
-  if (!userData) {
-    loginError.textContent = 'Nenhuma conta encontrada. Cadastre-se primeiro.';
-    return;
-  }
-  
-  const user = JSON.parse(userData);
-  
-  if (user.email !== email || user.senha !== senha) {
+  if (!user) {
     loginError.textContent = 'Email ou senha incorretos';
     showFieldError(document.getElementById('loginSenha'), 'Credenciais inválidas');
     return;
   }
   
   // Login bem-sucedido
+  localStorage.setItem('currentUser', JSON.stringify(user));
   authSection.classList.add('hidden');
   userSection.classList.remove('hidden');
   userNameSpan.textContent = user.nome;
@@ -205,7 +232,9 @@ formLogin.addEventListener('submit', e => {
   document.getElementById('loginSenha').value = '';
 });
 
+// Logout
 btnLogout.addEventListener('click', () => {
+  localStorage.removeItem('currentUser');
   userSection.classList.add('hidden');
   authSection.classList.remove('hidden');
   showLogin();
@@ -213,7 +242,7 @@ btnLogout.addEventListener('click', () => {
 
 // Verificar se usuário já está logado ao carregar a página
 window.addEventListener('DOMContentLoaded', () => {
-  const userData = localStorage.getItem('user');
+  const userData = localStorage.getItem('currentUser');
   
   if (userData) {
     const user = JSON.parse(userData);
