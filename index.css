@@ -93,7 +93,7 @@
 form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
   background: white;
   padding: 25px 30px;
   border-radius: 12px;
@@ -106,9 +106,16 @@ form h2 {
   font-weight: 700; 
   margin: 0 0 10px 0;
   text-align: center;
+  color: #333;
 }
 
 .hidden { display: none; }
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
 
 input {
   padding: 12px 15px;
@@ -117,6 +124,7 @@ input {
   border-radius: 7px;
   transition: all 0.3s;
   font-family: 'Roboto', sans-serif;
+  margin-bottom: 3px;
 }
 
 input:focus { 
@@ -128,20 +136,14 @@ input:focus {
 /* Estilos para campos inválidos */
 input.invalid {
   border-color: #d32f2f;
-  background-color: rgba(211, 47, 47, 0.05);
-  animation: shake 0.5s, pulse 2s;
+  background-color: rgba(211, 47, 47, 0.03);
+  animation: shake 0.5s;
 }
 
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
   20%, 40%, 60%, 80% { transform: translateX(5px); }
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(211, 47, 47, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
 }
 
 .password-container {
@@ -207,12 +209,22 @@ button[type="submit"]:hover, #btnLogout:hover {
 
 .error {
   color: #d32f2f;
-  font-size: 14px;
+  font-size: 13px;
   min-height: 18px;
-  margin-top: -5px;
-  padding: 5px;
+  padding: 4px 6px;
   border-radius: 4px;
-  background-color: rgba(211, 47, 47, 0.05);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  height: 0;
+  overflow: hidden;
+}
+
+.error.show {
+  opacity: 1;
+  transform: translateY(0);
+  height: auto;
+  margin-bottom: 5px;
 }
 
 .switch-text {
