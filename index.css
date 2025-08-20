@@ -80,38 +80,6 @@
 }
 
 /* ========================
-   FUNDO ANIMADO DE BANDEIRAS
-======================== */
-.flag-background-multi {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  opacity: 0.1;
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 10px 0;
-  gap: 8px;
-}
-
-.flag-row {
-  display: flex;
-  white-space: nowrap;
-  position: relative;
-  font-size: 40px;
-  line-height: 1;
-  overflow: hidden;
-}
-
-.flag-group {
-  display: flex;
-  gap: 15px;
-}
-
-/* ========================
    CONTEÚDO DO FORMULÁRIO
 ======================== */
 #content {
@@ -189,15 +157,59 @@ button[type="submit"]:hover, #btnLogout:hover { background-color: #0b7dda; }
 
 #user-section { text-align: center; font-family: 'Poppins', sans-serif; }
 
+/* ========================
+   RESPONSIVIDADE
+======================== */
 @media (max-width: 820px) {
-  #main-container { flex-direction: column; }
-  #left-column, #right-column {
+  #main-container { 
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  #left-column {
     flex: none;
     width: 100%;
     height: auto;
-    padding: 40px 20px;
+    padding: 30px 20px;
+    text-align: center;
     box-sizing: border-box;
   }
-  #left-column h1 { font-size: 3rem; margin-bottom: 15px; }
-  #content { max-width: 100%; }
+  
+  #left-column h1 { 
+    font-size: 2.5rem; 
+    margin-bottom: 15px; 
+  }
+  
+  #left-column p {
+    font-size: 1.1rem;
+  }
+  
+  #right-column {
+    flex: none;
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    box-shadow: none;
+    background: rgba(255,255,255,0.95);
+  }
+  
+  #content { 
+    max-width: 100%; 
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  #left-column h1 { 
+    font-size: 2rem; 
+  }
+  
+  #left-column p {
+    font-size: 1rem;
+  }
+  
+  form {
+    padding: 20px;
+  }
 }
