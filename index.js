@@ -39,9 +39,26 @@ function showCadastro() {
 
 // Limpar mensagens de erro
 function clearErrors() { 
-  loginError.textContent = ''; 
-  cadError.textContent = ''; 
-  confirmError.textContent = '';
+  hideError(loginError);
+  hideError(cadError);
+  hideError(confirmError);
+  
+  // Limpar erros dos campos
+  document.querySelectorAll('input').forEach(input => {
+    input.classList.remove('invalid');
+  });
+}
+
+// Mostrar erro com animação
+function showError(element, message) {
+  element.textContent = message;
+  element.classList.add('show');
+}
+
+// Esconder erro com animação
+function hideError(element) {
+  element.textContent = '';
+  element.classList.remove('show');
 }
 
 // Resetar validação de senha
@@ -82,19 +99,24 @@ function validatePassword(password) {
 
 // Validar confirmação de senha
 function validatePasswordConfirmation(password, confirmation) {
-  return password === confirmation && password !== '';
+  const isValid = password === confirmation && password !== '';
+  
+  // Esconder mensagem de erro se as senhas coincidirem
+  if (isValid) {
+    hideError(confirmError);
+    cadConfirmarSenha.classList.remove('invalid');
+  }
+  
+  return isValid;
 }
 
 // Efeito visual para campo inválido
-function showFieldError(field, message) {
+function showFieldError(field, errorElement, message) {
   field.classList.add('invalid');
+  showError(errorElement, message);
   
-  // Remover a classe após a animação
-  setTimeout(() => {
-    field.classList.remove('invalid');
-  }, 2000);
-  
-  return message;
+  // Focar no campo com erro
+  field.focus();
 }
 
 // Verificar se usuário existe
@@ -124,6 +146,16 @@ toLoginBtn.addEventListener('click', showLogin);
 // Validação em tempo real da senha
 cadSenha.addEventListener('input', () => {
   validatePassword(cadSenha.value);
+  
+  // Validar confirmação em tempo real também
+  if (cadConfirmarSenha.value) {
+    validatePasswordConfirmation(cadSenha.value, cadConfirmarSenha.value);
+  }
+});
+
+// Validação em tempo real da confirmação de senha
+cadConfirmarSenha.addEventListener('input', () => {
+  validatePasswordConfirmation(cadSenha.value, cadConfirmarSenha.value);
 });
 
 // Submissão do formulário de cadastro
@@ -137,39 +169,42 @@ formCadastro.addEventListener('submit', e => {
   const confirmarSenha = cadConfirmarSenha.value;
   
   let isValid = true;
-  let errorMessage = '';
   
   // Validar nome
   if (!nome) {
-    errorMessage = 'Por favor, informe seu nome completo';
-    showFieldError(document.getElementById('cadNome'), errorMessage);
+    showFieldError(document.getElementById('cadNome'), cadError, 'Por favor, informe seu nome completo');
     isValid = false;
   }
   
   // Validar email
-  if (!validateEmail(email)) {
-    errorMessage = 'Por favor, informe um email válido';
-    showFieldError(document.getElementById('cadEmail'), errorMessage);
+  if (!email) {
+    showFieldError(document.getElementById('cadEmail'), cadError, 'Por favor, informe seu email');
+    isValid = false;
+  } else if (!validateEmail(email)) {
+    showFieldError(document.getElementById('cadEmail'), cadError, 'Por favor, informe um email válido');
     isValid = false;
   } else if (userExists(email)) {
-    errorMessage = 'Este email já está cadastrado';
-    showFieldError(document.getElementById('cadEmail'), errorMessage);
+    showFieldError(document.getElementById('cadEmail'), cadError, 'Este email já está cadastrado');
     isValid = false;
   }
   
   // Validar senha
-  if (!validatePassword(senha)) {
-    errorMessage = 'A senha não atende a todos os requisitos';
-    cadError.textContent = errorMessage;
-    showFieldError(cadSenha, errorMessage);
+  if (!senha) {
+    showFieldError(cadSenha, cadError, 'Por favor, crie uma senha');
+    isValid = false;
+  } else if (!validatePassword(senha)) {
+    showError(cadError, 'A senha não atende a todos os requisitos');
+    cadSenha.classList.add('invalid');
     isValid = false;
   }
   
   // Validar confirmação de senha
-  if (!validatePasswordConfirmation(senha, confirmarSenha)) {
-    errorMessage = 'As senhas não coincidem';
-    confirmError.textContent = errorMessage;
-    showFieldError(cadConfirmarSenha, errorMessage);
+  if (!confirmarSenha) {
+    showFieldError(cadConfirmarSenha, confirmError, 'Por favor, confirme sua senha');
+    isValid = false;
+  } else if (!validatePasswordConfirmation(senha, confirmarSenha)) {
+    showError(confirmError, 'As senhas não coincidem');
+    cadConfirmarSenha.classList.add('invalid');
     isValid = false;
   }
   
@@ -180,7 +215,7 @@ formCadastro.addEventListener('submit', e => {
   
   // Mostrar mensagem de sucesso
   cadError.style.color = '#4caf50';
-  cadError.textContent = 'Cadastro realizado com sucesso!';
+  showError(cadError, 'Cadastro realizado com sucesso!');
   
   // Limpar formulário
   document.getElementById('cadNome').value = '';
@@ -194,7 +229,7 @@ formCadastro.addEventListener('submit', e => {
     authSection.classList.add('hidden');
     userSection.classList.remove('hidden');
     userNameSpan.textContent = nome;
-    cadError.textContent = '';
+    hideError(cadError);
   }, 2000);
 });
 
@@ -206,9 +241,20 @@ formLogin.addEventListener('submit', e => {
   const email = document.getElementById('loginEmail').value.trim();
   const senha = document.getElementById('loginSenha').value;
   
+  // Validar email
+  if (!email) {
+    showFieldError(document.getElementById('loginEmail'), loginError, 'Por favor, informe seu email');
+    return;
+  }
+  
   if (!validateEmail(email)) {
-    loginError.textContent = 'Por favor, informe um email válido';
-    showFieldError(document.getElementById('loginEmail'), 'Email inválido');
+    showFieldError(document.getElementById('loginEmail'), loginError, 'Por favor, informe um email válido');
+    return;
+  }
+  
+  // Validar senha
+  if (!senha) {
+    showFieldError(document.getElementById('loginSenha'), loginError, 'Por favor, informe sua senha');
     return;
   }
   
@@ -216,8 +262,8 @@ formLogin.addEventListener('submit', e => {
   const user = validateLogin(email, senha);
   
   if (!user) {
-    loginError.textContent = 'Email ou senha incorretos';
-    showFieldError(document.getElementById('loginSenha'), 'Credenciais inválidas');
+    showError(loginError, 'Email ou senha incorretos');
+    document.getElementById('loginSenha').classList.add('invalid');
     return;
   }
   
