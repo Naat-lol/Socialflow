@@ -38,9 +38,21 @@
 
           <form id="formCadastro" class="form hidden">
             <h2>Cadastro</h2>
-            <input type="text" id="cadNome" placeholder="Nome" required />
+            <input type="text" id="cadNome" placeholder="Nome completo" required />
             <input type="email" id="cadEmail" placeholder="Email" required />
-            <input type="password" id="cadSenha" placeholder="Senha (mín 6 caracteres)" minlength="6" required />
+            
+            <div class="password-container">
+              <input type="password" id="cadSenha" placeholder="Senha" required />
+              <ul class="password-requirements">
+                <li id="req-length">Mínimo de 8 caracteres</li>
+                <li id="req-number">Pelo menos 1 número</li>
+                <li id="req-special">Pelo menos 1 caractere especial</li>
+              </ul>
+            </div>
+            
+            <input type="password" id="cadConfirmarSenha" placeholder="Confirmar senha" required />
+            <div class="error" id="confirmError"></div>
+            
             <button type="submit">Cadastrar</button>
             <div class="error" id="cadError"></div>
             <p class="switch-text">
