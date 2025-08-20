@@ -110,11 +110,58 @@ input {
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 7px;
-  transition: border-color 0.3s;
+  transition: all 0.3s;
   font-family: 'Roboto', sans-serif;
 }
 
-input:focus { border-color: #2196f3; outline: none; }
+input:focus { 
+  border-color: #2196f3; 
+  outline: none; 
+}
+
+/* Estilos para campos inválidos */
+input.invalid {
+  border-color: #d32f2f;
+  background-color: rgba(211, 47, 47, 0.05);
+  animation: shake 0.5s, pulse 2s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(211, 47, 47, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
+}
+
+.password-container {
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.password-requirements {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+  font-size: 12px;
+  color: #666;
+}
+
+.password-requirements li {
+  margin-bottom: 4px;
+  transition: color 0.3s;
+}
+
+.password-requirements li.valid {
+  color: #4caf50;
+}
+
+.password-requirements li.invalid {
+  color: #d32f2f;
+}
 
 button[type="submit"], #btnLogout {
   padding: 12px;
@@ -135,11 +182,13 @@ button[type="submit"]:hover, #btnLogout:hover { background-color: #0b7dda; }
   color: #d32f2f;
   font-size: 14px;
   min-height: 18px;
+  margin-top: -5px;
 }
 
 .switch-text {
   font-size: 14px;
   text-align: center;
+  margin-top: 10px;
 }
 
 .switch-text button {
@@ -211,5 +260,9 @@ button[type="submit"]:hover, #btnLogout:hover { background-color: #0b7dda; }
   
   form {
     padding: 20px;
+  }
+  
+  .password-requirements {
+    font-size: 11px;
   }
 }
