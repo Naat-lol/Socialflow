@@ -4,8 +4,353 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SocialFlow</title>
-  <link rel="stylesheet" href="index.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Roboto&display=swap" rel="stylesheet" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Roboto:wght@400;500&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ========================
+       BACKGROUNDS
+    ======================== */
+    #background-image {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: url('https://Naat-lol.github.io/Socialflow/Equipe_E_em_O_Segredo_na_Floresta.png') no-repeat center center/cover;
+      filter: brightness(0.5) blur(6px);
+      z-index: -2;
+    }
+
+    #background-gradient {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: linear-gradient(270deg, rgba(255,0,150,0.4), rgba(0,204,255,0.4), rgba(255,255,0,0.4));
+      background-size: 600% 600%;
+      animation: gradientShift 20s ease infinite;
+      z-index: -1;
+      mix-blend-mode: overlay;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ========================
+       LAYOUT PRINCIPAL
+    ======================== */
+    #main-container {
+      display: flex;
+      min-height: 100vh;
+      max-width: 100vw;
+    }
+
+    #left-column {
+      flex: 1;
+      padding: 40px;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-shadow: 0 0 8px rgba(0,0,0,0.6);
+      user-select: none;
+      z-index: 1;
+    }
+
+    #left-column h1 {
+      font-size: 3.5rem;
+      margin: 0 0 20px 0;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      line-height: 1.1;
+    }
+
+    #left-column p {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.3rem;
+      line-height: 1.5;
+      margin: 0 0 10px 0;
+      font-weight: 400;
+    }
+
+    #right-column {
+      flex: 1;
+      position: relative;
+      background: rgba(255,255,255,0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-y: auto;
+      padding: 30px 20px;
+    }
+
+    /* ========================
+       CONTEÚDO DO FORMULÁRIO
+    ======================== */
+    #content {
+      width: 100%;
+      max-width: 420px;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .form-container {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    .form-title {
+      font-family: 'Poppins', sans-serif; 
+      font-weight: 700; 
+      font-size: 28px;
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #34495e;
+      font-size: 15px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      transition: all 0.3s;
+      font-family: 'Roboto', sans-serif;
+      background-color: #fafafa;
+    }
+
+    .form-input:focus {
+      border-color: #3498db;
+      background-color: white;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+
+    .form-input.invalid {
+      border-color: #e74c3c;
+      background-color: rgba(231, 76, 60, 0.03);
+      animation: shake 0.4s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+    .error-message {
+      color: #e74c3c;
+      font-size: 13px;
+      margin-top: 6px;
+      display: block;
+      opacity: 0;
+      height: 0;
+      transition: all 0.3s ease;
+    }
+
+    .error-message.show {
+      opacity: 1;
+      height: auto;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+      font-family: 'Roboto', sans-serif;
+      margin-top: 10px;
+      box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .password-requirements {
+      margin: 15px 0;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      border-left: 4px solid #3498db;
+    }
+
+    .requirements-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #2c3e50;
+      font-size: 15px;
+    }
+
+    .requirements-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .requirements-list li {
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #7f8c8d;
+      display: flex;
+      align-items: center;
+      transition: color 0.3s;
+    }
+
+    .requirements-list li.valid {
+      color: #27ae60;
+    }
+
+    .requirements-list li.invalid {
+      color: #e74c3c;
+    }
+
+    .requirement-icon {
+      margin-right: 8px;
+      font-size: 14px;
+    }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 15px;
+      color: #7f8c8d;
+    }
+
+    .form-footer a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .form-footer a:hover {
+      color: #2980b9;
+      text-decoration: underline;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* ========================
+       USER SECTION
+    ======================== */
+    #user-section {
+      text-align: center;
+      background: white;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    #user-section h1 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #user-section p {
+      color: #7f8c8d;
+      margin-bottom: 25px;
+    }
+
+    .btn-logout {
+      padding: 12px 25px;
+      font-size: 16px;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+    }
+
+    .btn-logout:hover {
+      background-color: #c0392b;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+    }
+
+    /* ========================
+       RESPONSIVIDADE
+    ======================== */
+    @media (max-width: 900px) {
+      #main-container { 
+        flex-direction: column;
+      }
+      
+      #left-column {
+        padding: 30px 20px;
+        text-align: center;
+      }
+      
+      #left-column h1 { 
+        font-size: 2.8rem; 
+      }
+      
+      #left-column p {
+        font-size: 1.1rem;
+      }
+      
+      #right-column {
+        padding: 20px 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #left-column h1 { 
+        font-size: 2.3rem; 
+      }
+      
+      .form-container {
+        padding: 25px 20px;
+      }
+      
+      .form-title {
+        font-size: 24px;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -24,50 +369,80 @@
     <div id="right-column">
       <div id="content">
 
+        <!-- Formulário de Login -->
         <div id="auth-section">
-          <form id="formLogin" class="form">
-            <h2>Login</h2>
-            <input type="email" id="loginEmail" placeholder="Email" required />
-            <input type="password" id="loginSenha" placeholder="Senha" required />
-            <button type="submit">Entrar</button>
-            <div class="error" id="loginError"></div>
-            <p class="switch-text">
-              Não tem conta? <button type="button" id="toCadastro">Cadastre-se</button>
-            </p>
-          </form>
-
-          <form id="formCadastro" class="form hidden">
-            <h2>Cadastro</h2>
-            <input type="text" id="cadNome" placeholder="Nome completo" required />
-            <input type="email" id="cadEmail" placeholder="Email" required />
+          <div id="formLogin" class="form-container">
+            <h2 class="form-title">Login</h2>
             
-            <div class="password-container">
-              <input type="password" id="cadSenha" placeholder="Crie uma senha" required />
-              <div class="password-requirements">
-                <p>Sua senha deve conter:</p>
-                <ul>
-                  <li id="req-length">Mínimo de 8 caracteres</li>
-                  <li id="req-number">Pelo menos 1 número</li>
-                  <li id="req-special">Pelo menos 1 caractere especial (!@#$%^&*)</li>
-                </ul>
-              </div>
+            <div class="form-group">
+              <label class="form-label" for="loginEmail">Email</label>
+              <input type="email" id="loginEmail" class="form-input" placeholder="seu@email.com" required>
+              <span class="error-message" id="loginEmailError"></span>
             </div>
             
-            <input type="password" id="cadConfirmarSenha" placeholder="Confirme sua senha" required />
-            <div class="error" id="confirmError"></div>
+            <div class="form-group">
+              <label class="form-label" for="loginSenha">Senha</label>
+              <input type="password" id="loginSenha" class="form-input" placeholder="Sua senha" required>
+              <span class="error-message" id="loginSenhaError"></span>
+            </div>
             
-            <button type="submit">Criar conta</button>
-            <div class="error" id="cadError"></div>
-            <p class="switch-text">
-              Já tem conta? <button type="button" id="toLogin">Faça login</button>
-            </p>
-          </form>
+            <button type="submit" class="btn-primary" id="btnLogin">Entrar</button>
+            
+            <div class="form-footer">
+              Não tem conta? <a id="toCadastro">Cadastre-se</a>
+            </div>
+          </div>
+
+          <!-- Formulário de Cadastro -->
+          <div id="formCadastro" class="form-container hidden">
+            <h2 class="form-title">Cadastro</h2>
+            
+            <div class="form-group">
+              <label class="form-label" for="cadNome">Nome completo</label>
+              <input type="text" id="cadNome" class="form-input" placeholder="Seu nome completo" required>
+              <span class="error-message" id="cadNomeError"></span>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="cadEmail">Email</label>
+              <input type="email" id="cadEmail" class="form-input" placeholder="seu@email.com" required>
+              <span class="error-message" id="cadEmailError"></span>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="cadSenha">Senha</label>
+              <input type="password" id="cadSenha" class="form-input" placeholder="Crie uma senha segura" required>
+              <span class="error-message" id="cadSenhaError"></span>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="cadConfirmarSenha">Confirmar senha</label>
+              <input type="password" id="cadConfirmarSenha" class="form-input" placeholder="Digite novamente sua senha" required>
+              <span class="error-message" id="cadConfirmarError"></span>
+            </div>
+            
+            <div class="password-requirements">
+              <div class="requirements-title">Sua senha deve conter:</div>
+              <ul class="requirements-list">
+                <li id="req-length"><span class="requirement-icon">◯</span> Mínimo de 8 caracteres</li>
+                <li id="req-number"><span class="requirement-icon">◯</span> Pelo menos 1 número</li>
+                <li id="req-special"><span class="requirement-icon">◯</span> Pelo menos 1 caractere especial (!@#$%^&*)</li>
+              </ul>
+            </div>
+            
+            <button type="submit" class="btn-primary" id="btnCadastro">Criar conta</button>
+            
+            <div class="form-footer">
+              Já tem conta? <a id="toLogin">Faça login</a>
+            </div>
+          </div>
         </div>
 
+        <!-- Área do usuário logado -->
         <div id="user-section" class="hidden">
           <h1>Bem-vindo(a), <span id="userName"></span>!</h1>
           <p>Você está conectado ao SocialFlow.</p>
-          <button id="btnLogout">Sair</button>
+          <button class="btn-logout" id="btnLogout">Sair</button>
         </div>
 
       </div>
@@ -75,6 +450,340 @@
 
   </div>
 
-  <script src="index.js"></script>
+  <script>
+    // -----------------------
+    // ELEMENTOS DA DOM
+    // -----------------------
+    const formLogin = document.getElementById('formLogin');
+    const formCadastro = document.getElementById('formCadastro');
+    const authSection = document.getElementById('auth-section');
+    const userSection = document.getElementById('user-section');
+    const userNameSpan = document.getElementById('userName');
+    
+    // Botões
+    const toCadastroBtn = document.getElementById('toCadastro');
+    const toLoginBtn = document.getElementById('toLogin');
+    const btnLogin = document.getElementById('btnLogin');
+    const btnCadastro = document.getElementById('btnCadastro');
+    const btnLogout = document.getElementById('btnLogout');
+    
+    // Campos de entrada
+    const loginEmail = document.getElementById('loginEmail');
+    const loginSenha = document.getElementById('loginSenha');
+    const cadNome = document.getElementById('cadNome');
+    const cadEmail = document.getElementById('cadEmail');
+    const cadSenha = document.getElementById('cadSenha');
+    const cadConfirmarSenha = document.getElementById('cadConfirmarSenha');
+    
+    // Mensagens de erro
+    const loginEmailError = document.getElementById('loginEmailError');
+    const loginSenhaError = document.getElementById('loginSenhaError');
+    const cadNomeError = document.getElementById('cadNomeError');
+    const cadEmailError = document.getElementById('cadEmailError');
+    const cadSenhaError = document.getElementById('cadSenhaError');
+    const cadConfirmarError = document.getElementById('cadConfirmarError');
+    
+    // Requisitos de senha
+    const reqLength = document.getElementById('req-length');
+    const reqNumber = document.getElementById('req-number');
+    const reqSpecial = document.getElementById('req-special');
+    
+    // -----------------------
+    // FUNÇÕES DE VALIDAÇÃO
+    // -----------------------
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+    
+    function validatePassword(password) {
+      const hasMinLength = password.length >= 8;
+      const hasNumber = /\d/.test(password);
+      const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+      
+      // Atualizar visualmente os requisitos
+      updateRequirement(reqLength, hasMinLength);
+      updateRequirement(reqNumber, hasNumber);
+      updateRequirement(reqSpecial, hasSpecial);
+      
+      return hasMinLength && hasNumber && hasSpecial;
+    }
+    
+    function updateRequirement(element, isValid) {
+      if (isValid) {
+        element.classList.add('valid');
+        element.classList.remove('invalid');
+        element.querySelector('.requirement-icon').textContent = '✓';
+      } else {
+        element.classList.add('invalid');
+        element.classList.remove('valid');
+        element.querySelector('.requirement-icon').textContent = '✗';
+      }
+    }
+    
+    function validatePasswordConfirmation(password, confirmation) {
+      return password === confirmation;
+    }
+    
+    function userExists(email) {
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      return users.some(user => user.email === email);
+    }
+    
+    // -----------------------
+    // FUNÇÕES DE INTERFACE
+    // -----------------------
+    function showError(element, message) {
+      element.textContent = message;
+      element.classList.add('show');
+    }
+    
+    function hideError(element) {
+      element.textContent = '';
+      element.classList.remove('show');
+    }
+    
+    function clearErrors() {
+      hideError(loginEmailError);
+      hideError(loginSenhaError);
+      hideError(cadNomeError);
+      hideError(cadEmailError);
+      hideError(cadSenhaError);
+      hideError(cadConfirmarError);
+      
+      // Remover classes de erro dos inputs
+      document.querySelectorAll('.form-input').forEach(input => {
+        input.classList.remove('invalid');
+      });
+    }
+    
+    function showLogin() {
+      formLogin.classList.remove('hidden');
+      formCadastro.classList.add('hidden');
+      clearErrors();
+    }
+    
+    function showCadastro() {
+      formCadastro.classList.remove('hidden');
+      formLogin.classList.add('hidden');
+      clearErrors();
+      resetPasswordValidation();
+    }
+    
+    function resetPasswordValidation() {
+      [reqLength, reqNumber, reqSpecial].forEach(req => {
+        req.classList.remove('valid', 'invalid');
+        req.querySelector('.requirement-icon').textContent = '◯';
+      });
+    }
+    
+    // -----------------------
+    // FUNÇÕES DE AUTENTICAÇÃO
+    // -----------------------
+    function loginUser(email, password) {
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      return users.find(user => user.email === email && user.password === password);
+    }
+    
+    function registerUser(userData) {
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      users.push(userData);
+      localStorage.setItem('users', JSON.stringify(users));
+      localStorage.setItem('currentUser', JSON.stringify(userData));
+      return userData;
+    }
+    
+    function handleLogin() {
+      clearErrors();
+      
+      const email = loginEmail.value.trim();
+      const password = loginSenha.value;
+      
+      let isValid = true;
+      
+      // Validar email
+      if (!email) {
+        showError(loginEmailError, 'Por favor, informe seu email');
+        loginEmail.classList.add('invalid');
+        isValid = false;
+      } else if (!validateEmail(email)) {
+        showError(loginEmailError, 'Por favor, informe um email válido');
+        loginEmail.classList.add('invalid');
+        isValid = false;
+      }
+      
+      // Validar senha
+      if (!password) {
+        showError(loginSenhaError, 'Por favor, informe sua senha');
+        loginSenha.classList.add('invalid');
+        isValid = false;
+      }
+      
+      if (!isValid) return;
+      
+      // Tentar fazer login
+      const user = loginUser(email, password);
+      
+      if (user) {
+        // Login bem-sucedido
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        authSection.classList.add('hidden');
+        userSection.classList.remove('hidden');
+        userNameSpan.textContent = user.name;
+        
+        // Limpar formulário
+        loginEmail.value = '';
+        loginSenha.value = '';
+      } else {
+        showError(loginSenhaError, 'Email ou senha incorretos');
+        loginSenha.classList.add('invalid');
+      }
+    }
+    
+    function handleRegister() {
+      clearErrors();
+      
+      const name = cadNome.value.trim();
+      const email = cadEmail.value.trim();
+      const password = cadSenha.value;
+      const confirmPassword = cadConfirmarSenha.value;
+      
+      let isValid = true;
+      
+      // Validar nome
+      if (!name) {
+        showError(cadNomeError, 'Por favor, informe seu nome completo');
+        cadNome.classList.add('invalid');
+        isValid = false;
+      }
+      
+      // Validar email
+      if (!email) {
+        showError(cadEmailError, 'Por favor, informe seu email');
+        cadEmail.classList.add('invalid');
+        isValid = false;
+      } else if (!validateEmail(email)) {
+        showError(cadEmailError, 'Por favor, informe um email válido');
+        cadEmail.classList.add('invalid');
+        isValid = false;
+      } else if (userExists(email)) {
+        showError(cadEmailError, 'Este email já está cadastrado');
+        cadEmail.classList.add('invalid');
+        isValid = false;
+      }
+      
+      // Validar senha
+      if (!password) {
+        showError(cadSenhaError, 'Por favor, crie uma senha');
+        cadSenha.classList.add('invalid');
+        isValid = false;
+      } else if (!validatePassword(password)) {
+        showError(cadSenhaError, 'A senha não atende a todos os requisitos');
+        cadSenha.classList.add('invalid');
+        isValid = false;
+      }
+      
+      // Validar confirmação de senha
+      if (!confirmPassword) {
+        showError(cadConfirmarError, 'Por favor, confirme sua senha');
+        cadConfirmarSenha.classList.add('invalid');
+        isValid = false;
+      } else if (!validatePasswordConfirmation(password, confirmPassword)) {
+        showError(cadConfirmarError, 'As senhas não coincidem');
+        cadConfirmarSenha.classList.add('invalid');
+        isValid = false;
+      }
+      
+      if (!isValid) return;
+      
+      // Registrar usuário
+      const userData = {
+        name: name,
+        email: email,
+        password: password
+      };
+      
+      registerUser(userData);
+      
+      // Mostrar área do usuário
+      authSection.classList.add('hidden');
+      userSection.classList.remove('hidden');
+      userNameSpan.textContent = userData.name;
+      
+      // Limpar formulário
+      cadNome.value = '';
+      cadEmail.value = '';
+      cadSenha.value = '';
+      cadConfirmarSenha.value = '';
+    }
+    
+    function handleLogout() {
+      localStorage.removeItem('currentUser');
+      userSection.classList.add('hidden');
+      authSection.classList.remove('hidden');
+      showLogin();
+    }
+    
+    // -----------------------
+    // EVENT LISTENERS
+    // -----------------------
+    toCadastroBtn.addEventListener('click', showCadastro);
+    toLoginBtn.addEventListener('click', showLogin);
+    btnLogin.addEventListener('click', handleLogin);
+    btnCadastro.addEventListener('click', handleRegister);
+    btnLogout.addEventListener('click', handleLogout);
+    
+    // Validação em tempo real da senha
+    cadSenha.addEventListener('input', function() {
+      validatePassword(this.value);
+      
+      // Se houver texto na confirmação, validar também
+      if (cadConfirmarSenha.value) {
+        if (!validatePasswordConfirmation(this.value, cadConfirmarSenha.value)) {
+          showError(cadConfirmarError, 'As senhas não coincidem');
+          cadConfirmarSenha.classList.add('invalid');
+        } else {
+          hideError(cadConfirmarError);
+          cadConfirmarSenha.classList.remove('invalid');
+        }
+      }
+    });
+    
+    // Validação em tempo real da confirmação
+    cadConfirmarSenha.addEventListener('input', function() {
+      if (!validatePasswordConfirmation(cadSenha.value, this.value)) {
+        showError(cadConfirmarError, 'As senhas não coincidem');
+        this.classList.add('invalid');
+      } else {
+        hideError(cadConfirmarError);
+        this.classList.remove('invalid');
+      }
+    });
+    
+    // Remover mensagens de erro ao digitar
+    document.querySelectorAll('.form-input').forEach(input => {
+      input.addEventListener('input', function() {
+        this.classList.remove('invalid');
+        const errorId = this.id + 'Error';
+        const errorElement = document.getElementById(errorId);
+        if (errorElement) hideError(errorElement);
+      });
+    });
+    
+    // -----------------------
+    // INICIALIZAÇÃO
+    // -----------------------
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+      
+      if (currentUser) {
+        authSection.classList.add('hidden');
+        userSection.classList.remove('hidden');
+        userNameSpan.textContent = currentUser.name;
+      } else {
+        showLogin();
+      }
+    });
+  </script>
 </body>
 </html>
