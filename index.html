@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>SocialFlow</title>
+  <link rel="stylesheet" href="css/index.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Roboto&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <div id="background-image"></div>
+  <div id="background-gradient"></div>
+
+  <div id="main-container">
+
+    <!-- Coluna esquerda -->
+    <div id="left-column">
+      <h1>SocialFlow</h1>
+      <p>Conecte-se com o mundo. Encontre novas amizades, compartilhe momentos, viva experiências.</p>
+    </div>
+
+    <!-- Coluna direita -->
+    <div id="right-column">
+
+      <!-- Fundo animado com emojis de bandeiras -->
+      <div class="flag-background-multi">
+        <!-- Linha 1 - esquerda -->
+        <div class="flag-row flag-row-left" style="--duration: 20s;">
+          <div class="flag-group">🇺🇸 🇧🇷 🇫🇷 🇩🇪 🇮🇳 🇨🇦 🇯🇵 🇰🇷 🇷🇺 🇮🇹</div>
+          <div class="flag-group">🇺🇸 🇧🇷 🇫🇷 🇩🇪 🇮🇳 🇨🇦 🇯🇵 🇰🇷 🇷🇺 🇮🇹</div>
+        </div>
+        <!-- Linha 2 - direita -->
+        <div class="flag-row flag-row-right" style="--duration: 25s;">
+          <div class="flag-group">🇫🇷 🇩🇪 🇮🇹 🇷🇺 🇰🇷 🇯🇵 🇺🇸 🇧🇷 🇨🇦 🇮🇳</div>
+          <div class="flag-group">🇫🇷 🇩🇪 🇮🇹 🇷🇺 🇰🇷 🇯🇵 🇺🇸 🇧🇷 🇨🇦 🇮🇳</div>
+        </div>
+        <!-- Linha 3 - esquerda -->
+        <div class="flag-row flag-row-left" style="--duration: 22s;">
+          <div class="flag-group">🇮🇳 🇨🇦 🇩🇪 🇫🇷 🇧🇷 🇺🇸 🇮🇹 🇷🇺 🇯🇵 🇰🇷</div>
+          <div class="flag-group">🇮🇳 🇨🇦 🇩🇪 🇫🇷 🇧🇷 🇺🇸 🇮🇹 🇷🇺 🇯🇵 🇰🇷</div>
+        </div>
+        <!-- Linha 4 - direita -->
+        <div class="flag-row flag-row-right" style="--duration: 28s;">
+          <div class="flag-group">🇯🇵 🇰🇷 🇮🇹 🇫🇷 🇩🇪 🇧🇷 🇨🇦 🇺🇸 🇷🇺 🇮🇳</div>
+          <div class="flag-group">🇯🇵 🇰🇷 🇮🇹 🇫🇷 🇩🇪 🇧🇷 🇨🇦 🇺🇸 🇷🇺 🇮🇳</div>
+        </div>
+        <!-- Linha 5 - esquerda -->
+        <div class="flag-row flag-row-left" style="--duration: 24s;">
+          <div class="flag-group">🇧🇷 🇺🇸 🇫🇷 🇩🇪 🇮🇳 🇨🇦 🇷🇺 🇮🇹 🇯🇵 🇰🇷</div>
+          <div class="flag-group">🇧🇷 🇺🇸 🇫🇷 🇩🇪 🇮🇳 🇨🇦 🇷🇺 🇮🇹 🇯🇵 🇰🇷</div>
+        </div>
+        <!-- Linha 6 - direita -->
+        <div class="flag-row flag-row-right" style="--duration: 21s;">
+          <div class="flag-group">🇩🇪 🇫🇷 🇺🇸 🇮🇳 🇨🇦 🇧🇷 🇰🇷 🇯🇵 🇷🇺 🇮🇹</div>
+          <div class="flag-group">🇩🇪 🇫🇷 🇺🇸 🇮🇳 🇨🇦 🇧🇷 🇰🇷 🇯🇵 🇷🇺 🇮🇹</div>
+        </div>
+        <!-- Linha 7 - esquerda -->
+        <div class="flag-row flag-row-left" style="--duration: 23s;">
+          <div class="flag-group">🇮🇹 🇷🇺 🇯🇵 🇰🇷 🇫🇷 🇧🇷 🇺🇸 🇨🇦 🇮🇳 🇩🇪</div>
+          <div class="flag-group">🇮🇹 🇷🇺 🇯🇵 🇰🇷 🇫🇷 🇧🇷 🇺🇸 🇨🇦 🇮🇳 🇩🇪</div>
+        </div>
+      </div>
+
+      <div id="content">
+
+        <div id="auth-section">
+          <form id="formLogin" class="form">
+            <h2>Login</h2>
+            <input type="email" id="loginEmail" placeholder="Email" required />
+            <input type="password" id="loginSenha" placeholder="Senha" required />
+            <button type="submit">Entrar</button>
+            <div class="error" id="loginError"></div>
+            <p class="switch-text">
+              Não tem conta? <button type="button" id="toCadastro">Cadastre-se</button>
+            </p>
+          </form>
+
+          <form id="formCadastro" class="form hidden">
+            <h2>Cadastro</h2>
+            <input type="text" id="cadNome" placeholder="Nome" required />
+            <input type="email" id="cadEmail" placeholder="Email" required />
+            <input type="password" id="cadSenha" placeholder="Senha (mín 6 caracteres)" minlength="6" required />
+            <button type="submit">Cadastrar</button>
+            <div class="error" id="cadError"></div>
+            <p class="switch-text">
+              Já tem conta? <button type="button" id="toLogin">Faça login</button>
+            </p>
+          </form>
+        </div>
+
+        <div id="user-section" class="hidden">
+          <h1>Bem-vindo(a), <span id="userName"></span>!</h1>
+          <button id="btnLogout">Sair</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="js/index.js"></script>
+</body>
+</html>
