@@ -14,7 +14,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: url('../img/pessoas.jpg') no-repeat center center/cover;
+  background: url('..Equipe_E_em_O_Segredo_na_Floresta.png') no-repeat center center/cover;
   filter: brightness(0.5) blur(6px);
   z-index: -2;
 }
