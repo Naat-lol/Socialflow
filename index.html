@@ -42,18 +42,21 @@
             <input type="email" id="cadEmail" placeholder="Email" required />
             
             <div class="password-container">
-              <input type="password" id="cadSenha" placeholder="Senha" required />
-              <ul class="password-requirements">
-                <li id="req-length">Mínimo de 8 caracteres</li>
-                <li id="req-number">Pelo menos 1 número</li>
-                <li id="req-special">Pelo menos 1 caractere especial</li>
-              </ul>
+              <input type="password" id="cadSenha" placeholder="Crie uma senha" required />
+              <div class="password-requirements">
+                <p>Sua senha deve conter:</p>
+                <ul>
+                  <li id="req-length">Mínimo de 8 caracteres</li>
+                  <li id="req-number">Pelo menos 1 número</li>
+                  <li id="req-special">Pelo menos 1 caractere especial (!@#$%^&*)</li>
+                </ul>
+              </div>
             </div>
             
-            <input type="password" id="cadConfirmarSenha" placeholder="Confirmar senha" required />
+            <input type="password" id="cadConfirmarSenha" placeholder="Confirme sua senha" required />
             <div class="error" id="confirmError"></div>
             
-            <button type="submit">Cadastrar</button>
+            <button type="submit">Criar conta</button>
             <div class="error" id="cadError"></div>
             <p class="switch-text">
               Já tem conta? <button type="button" id="toLogin">Faça login</button>
@@ -63,6 +66,7 @@
 
         <div id="user-section" class="hidden">
           <h1>Bem-vindo(a), <span id="userName"></span>!</h1>
+          <p>Você está conectado ao SocialFlow.</p>
           <button id="btnLogout">Sair</button>
         </div>
 
